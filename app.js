@@ -13,6 +13,17 @@ const helmet = require("helmet");
 
 const app = express();
 
+// Set up mongoose connection
+const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
+const mongoDB = "mongodb+srv://arthurjorge:arthur030406@cluster0.u8cdkki.mongodb.net/?retryWrites=true&w=majority";
+
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB);
+}
+
+
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
@@ -22,13 +33,6 @@ const limiter = RateLimit({
 // Apply rate limiter to all requests
 app.use(limiter);
 
-// Set up mongoose connection
-const mongoose = require("mongoose");
-mongoose.set("strictQuery", false);
-
-const dev_db_url =
-  "mongodb+srv://cooluser:coolpassword@cluster0.lz91hw2.mongodb.net/local_library?retryWrites=true&w=majority";
-const mongoDB = process.env.MONGODB_URI || dev_db_url;
 
 main().catch((err) => console.log(err));
 async function main() {
